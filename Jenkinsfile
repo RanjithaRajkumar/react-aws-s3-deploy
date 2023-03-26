@@ -1,9 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'node:10-alpine'
-      args '-p 20001-20100:3000'
-    }
+  agent { any
   }
   environment {
     CI = 'true'
@@ -37,24 +33,14 @@ pipeline {
             branch 'staging'
           }
           steps {
-            withAWS(region:'us-east-2',credentials:'ecod-aws') {
-              s3Delete(bucket: 'ecod-s3-stage', path:'**/*')
-              s3Upload(bucket: 'ecod-s3-stage', workingDir:'build', includePathPattern:'**/*');
-            }
-          }
-        }
-        stage('Production') {
-          when {
-            branch 'master'
-          }
-          steps {
-            withAWS(region:'us-east-2',credentials:'ecod-aws') {
-              s3Delete(bucket: 'ecod-s3-prod', path:'**/*')
-              s3Upload(bucket: 'ecod-s3-prod', workingDir:'build', includePathPattern:'**/*');
-            }
-          }
+            withAWS(region:'us-east-2',credentials:'aws_s3_pipeline') {
+              s3Delete(bucket: 'ranjitha123', path:'**/*')
+              s3Upload(bucket: 'ranjitha123', workingDir:'build', includePathPattern:'**/*');
+          
         }
       }
     }
   }
+}
+}
 }
