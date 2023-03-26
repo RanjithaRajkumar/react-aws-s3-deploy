@@ -29,7 +29,7 @@ pipeline {
       parallel {
         stage('Staging') {
           when {
-            branch 'staging'
+            branch 'master'
           }
           steps {
             withAWS(region:'us-east-2',credentials:'aws_s3_pipeline') {
